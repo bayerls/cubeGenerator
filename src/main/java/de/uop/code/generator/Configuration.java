@@ -9,7 +9,7 @@ public class Configuration {
 
     // Endpoints
     public static final String ENDPOINT_BIGDATA = "http://zaire.dimis.fim.uni-passau.de:8181/bigdata/sparql";
-    // public static final String ENDPOINT_BIGDATA = "http://localhost:8080/bigdata/sparql";
+//    public static final String ENDPOINT_BIGDATA = "http://localhost:8080/sparql";
 
     // Time unit for log
     public static final TimeUnit TIME_UNIT = TimeUnit.MILLISECONDS;
@@ -26,7 +26,7 @@ public class Configuration {
     public static int OBS_OFFSET = 50;
 
     // Metadata for the cube
-    public final static String AUTH = "8023903";//"cubeGenerator";
+    public static String AUTH = "8023903";//"cubeGenerator";
     public final static String DESCRIPTION = "Generated with the CubeGenerator";
     public final static String VERSION = "codeCube/1.1";
     public final static String RELATION = "Cube was generated with the CubeGenerator";

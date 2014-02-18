@@ -12,6 +12,14 @@ import java.io.ByteArrayOutputStream;
  */
 public class ModelPersister {
 
+    /**
+     * Persist the model in the triple store.
+     *
+     * @param model The Jena RDF model.
+     * @param context The named graph, the model will be stored in.
+     *
+     * @return Returns the response of the triple store.
+     */
     public String persist(Model model, String context) {
         BigdataConnector bigdataConnector = new BigdataConnector();
         String result = bigdataConnector.persist(convertModelToString(model), ContentTypeRdf.N3, context);
@@ -21,7 +29,7 @@ public class ModelPersister {
         return result;
     }
 
-    public String convertModelToString(Model model) {
+    private String convertModelToString(Model model) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         model.write(baos, Lang.N3.getName());
 

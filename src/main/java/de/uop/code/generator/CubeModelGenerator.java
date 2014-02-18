@@ -1,9 +1,7 @@
 package de.uop.code.generator;
 
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
-import com.hp.hpl.jena.rdf.model.Property;
-import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
+import com.hp.hpl.jena.rdf.model.*;
 import com.hp.hpl.jena.vocabulary.DC;
 import com.hp.hpl.jena.vocabulary.RDF;
 import com.hp.hpl.jena.vocabulary.RDFS;
@@ -22,6 +20,9 @@ import java.net.*;
 import java.nio.charset.Charset;
 import java.util.*;
 
+/**
+ * Generates a Jena Model from a cube.
+ */
 public class CubeModelGenerator {
 
     private Model model = ModelFactory.createDefaultModel();
@@ -30,6 +31,14 @@ public class CubeModelGenerator {
     private List<Property> components = new ArrayList<Property>();
     private Map<String, String> entities = new HashMap<String, String>();
 
+    /**
+     * Generates the cube and the dataset structure definition.
+     *
+     * @param cube The input cube.
+     * @param usePrefix If true the values of the components will be prefixed.
+     *
+     * @return A jena model.
+     */
     public Model getCubeModelWithStructure(Cube cube, boolean usePrefix) {
         setNamespaces(model);
         Resource dataset = createDataset(cube);
@@ -51,7 +60,6 @@ public class CubeModelGenerator {
 
         return model;
     }
-
 
     private Resource createDataset(Cube cube) {
         dataset = model.createResource(CODE.DATASET + getRandomId());
@@ -122,25 +130,35 @@ public class CubeModelGenerator {
         }
     }
 
+    /**
+     * Generates a model containing a set of observations and the according entities.
+     *
+     * @param cube The input cube.
+     *
+     * @return A model containing the observations and entities.
+     */
     public Model getObservationsWithEntities(Cube cube) {
         Model observationModel = ModelFactory.createDefaultModel();
         setNamespaces(observationModel);
 
+        // Iterate over the set of input observations
         for (Observation observation : cube.getObservations()) {
             Resource resource = observationModel.createResource(CODE.OBS + obsCounter);
             resource.addProperty(RDF.type, QB.OBSERVATION);
             resource.addProperty(QB.DATASET_PROPERTY, dataset);
 
+            // Iterate over all components of this observation
             for (int i = 0; i < observation.getValues().size(); i++) {
-
                 if (i < cube.getDatasetStructureDefinition().getDimensions().size()) {
+                    // Generate the value for a dimension
                     String key = observation.getValues().get(i);
 
-
+                    // Generate a new enitity ID if necessary
                     if (!entities.containsKey(key)) {
                         entities.put(key, UUID.randomUUID().toString());
                     }
 
+                    // Generate a valid enitiy concept
                     String keyRep =  key.replaceAll(",", "");
 
                     URI uri = null;
@@ -149,7 +167,6 @@ public class CubeModelGenerator {
                     } catch (URISyntaxException e) {
                         e.printStackTrace();
                     }
-
 
                     URL url = null;
                     try {
@@ -164,7 +181,11 @@ public class CubeModelGenerator {
                     entity.addProperty(RDF.type, CODE.ENTITY);
                     resource.addProperty(components.get(i), entity);
                 } else {
-                    resource.addProperty(components.get(i), observation.getValues().get(i));
+                    // Generate the value for the measure
+                    // long is here the default type
+                    XSDDatatype xsdDatatype = XSDDatatype.XSDlong;
+                    Literal literal = model.createTypedLiteral(observation.getValues().get(i), xsdDatatype);
+                    resource.addProperty(components.get(i), literal);
                 }
             }
 
@@ -179,6 +200,11 @@ public class CubeModelGenerator {
         return UUID.randomUUID().toString();
     }
 
+    /**
+     * Generate the URL of a random new NAMED GRAPH.
+     *
+     * @return A URL with a random component
+     */
     public String getNamedGraph() {
         return CODE.getURI() + "cube/" + getRandomId();
     }

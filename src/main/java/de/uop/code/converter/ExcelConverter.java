@@ -10,16 +10,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * This class is used to normalize excel files downloaded from http://epp.eurostat.ec.europa.eu/
+ *
  * Created by Basti on 04/02/14.
  */
 public class ExcelConverter {
-
 
     private static final String PATH = "/Users/Basti/Desktop/Work/2014-02-03 Bacon Datasets/Fishing/convert";
     private static final String PATH_OUTPUT = "/Users/Basti/Desktop/Work/2014-02-03 Bacon Datasets/Fishing/output/";
     private static final String[] COUNTRIES = {"Belgium", "Bulgaria", "Cyprus", "Germany", "Denmark", "Estonia", "Greece", "Spain", "Finland", "France", "Croatia", "Ireland", "Iceland", "Italy", "Lithuania", "Lativa", "Malta", "Netherlands", "Norway", "Poland", "Portugal", "Romania", "Sweden", "Slovenia", "United Kingdom"};
 
-
+    /**
+     * Normalize the excel files: One dimension/measure per column and add the country column.
+     */
     public void convert() {
         File folder = new File(PATH);
         File[] files = folder.listFiles();
@@ -32,7 +35,6 @@ public class ExcelConverter {
             File file = files[i];
             createNewWorkbook(file, COUNTRIES[i]);
         }
-
     }
 
     private void createNewWorkbook(File file, String country) {
@@ -116,7 +118,6 @@ public class ExcelConverter {
         }
     }
 
-
     private Workbook getWorkbook(File filepath) {
         // load the file as a poi workbook
         InputStream inp = null;
@@ -139,7 +140,5 @@ public class ExcelConverter {
 
         return workbook;
     }
-
-
 
 }

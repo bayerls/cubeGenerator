@@ -24,7 +24,6 @@ public class QB {
     public static final Resource DATASET = m.createResource(URI + "DataSet");
     public static final Resource DIM_PROPERTY = m.createResource(URI + "DimensionProperty");
     public static final Resource MEASURE_PROPERTY = m.createResource(URI + "MeasureProperty");
-//    public static final Resource ATTRIBUTE_PROPERTY = m.createResource(URI + "AttributeProperty");
     public static final Resource OBSERVATION = m.createResource(URI + "Observation");
 
     public static final Property COMPONENT = m.createProperty(URI + "component");

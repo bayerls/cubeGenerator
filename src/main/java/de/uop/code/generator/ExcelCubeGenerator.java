@@ -67,8 +67,6 @@ public class ExcelCubeGenerator {
         return cube;
     }
 
-
-
     private Workbook getWorkbook(File filepath) {
         // load the file as a poi workbook
         InputStream inp = null;

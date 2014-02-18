@@ -17,6 +17,9 @@ public class CubeGenerationHandler {
     private CubeModelGenerator cubeModelGenerator = new CubeModelGenerator();
     private ModelPersister modelPersister = new ModelPersister();
 
+    /**
+     * Wraps all functionality to generate and persist cubes based on the Configuration class.
+     */
     public void generate() {
         Stopwatch watch = Stopwatch.createStarted();
         String namedGraph = cubeModelGenerator.getNamedGraph();

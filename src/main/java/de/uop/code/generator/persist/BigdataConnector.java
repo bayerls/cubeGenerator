@@ -17,11 +17,20 @@ public class BigdataConnector {
 
 	private final static String CONTEXT_URI = "?context-uri=";
 
+    /**
+     *
+     * Call the SPARQL endpoint defined in the Configuration class to persist a RDF Dump.
+     *
+     * @param content The RDF Dump.
+     * @param contentType The content type of the dump.
+     * @param context The name of the NAMED GRAPH in the triple store. (A new one will be generated if not existing.)
+     *
+     * @return Return the answer of the triple store.
+     */
 	public String persist(String content, ContentTypeRdf contentType, String context) {
         //System.out.println(content);
         HttpClient httpClient = HttpClients.createDefault();
         HttpPost httpPost = new HttpPost(Configuration.ENDPOINT_BIGDATA + CONTEXT_URI + context);
-
         httpPost.setHeader("Content-Type", contentType.getContentTypeRdf());
 
         try {
@@ -30,7 +39,7 @@ public class BigdataConnector {
             e.printStackTrace();
         }
 
-        HttpResponse response = null;
+        HttpResponse response;
         String result = "";
         try {
             response = httpClient.execute(httpPost);

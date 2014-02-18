@@ -19,10 +19,7 @@ public class CODE {
         return URI;
     }
 
-
     public static final Resource ENTITY = m.createResource(URI + "Entity");
-
-
 
     public static final String DATASET = URI + "Dataset-";
     public static final String DSD = URI + "Dsd-";

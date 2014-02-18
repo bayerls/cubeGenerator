@@ -16,13 +16,15 @@ public class CubeGenerationExcelHandler {
     private CubeModelGenerator cubeModelGenerator = new CubeModelGenerator();
     private ModelPersister modelPersister = new ModelPersister();
 
+    /**
+     * Wraps all functionality to persist the model generated from an excel input file.
+     *
+     * @param file The excel file.
+     */
     public void generate(File file) {
         Stopwatch watch = Stopwatch.createStarted();
         String namedGraph = cubeModelGenerator.getNamedGraph();
         Cube cube = excelCubeGenerator.getCube(file);
-
-        // excelCubeGenerator.printObservations(cube);
-
         Model model = cubeModelGenerator.getCubeModelWithStructure(cube, false);
         modelPersister.persist(model, namedGraph);
 
@@ -32,6 +34,5 @@ public class CubeGenerationExcelHandler {
         modelPersister.persist(model, namedGraph);
 
         System.out.println("Cube observations generated in: " + watch.elapsed(Configuration.TIME_UNIT) + Configuration.TIME_UNIT_SUFFIX);
-        System.out.println("Done!");
     }
 }
